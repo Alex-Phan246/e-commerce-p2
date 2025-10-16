@@ -4,6 +4,7 @@ import { useAppContext } from '../../../context/AppContext';
 import Navbar from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
 import '../../../styles/Checkout.css';
+import Image from 'next/image';
 
 const CheckoutPage = () => {
   const { 
@@ -556,7 +557,7 @@ const CheckoutPage = () => {
                   <div className="order-items">
                     {cart.map((item) => (
                       <div key={item.id} className="order-item">
-                        <img src={item.image[0]} alt={item.name} className="order-item-image" />
+                        <Image src={item.image[0]} alt={item.name} className="order-item-image" width={60} height={60} />
                         <div className="order-item-details">
                           <h4>{item.name}</h4>
                           <p>Qty: {item.quantity}</p>

@@ -1,13 +1,14 @@
 "use client"
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useAppContext } from '../../../context/AppContext';
 import Navbar from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
 import ProductCard from '../../../components/ProductCard';
 import Loading from '../../../components/Loading';
+import '../../../styles/AllProducts.css';
 
-const AllProductsPage = () => {
+const AllProductsContent = () => {
   const searchParams = useSearchParams();
   const { 
     categories, 
@@ -36,7 +37,7 @@ const AllProductsPage = () => {
     }
   }, [searchParams]); 
   
-  const loadProducts = async () => {
+  const loadProducts = useCallback(async () => {
     const params = {
       page: currentPage,
       ...filters
@@ -69,24 +70,25 @@ const AllProductsPage = () => {
       setDisplayProducts([]);
       setPagination({});
     }
-  };
+  }, [currentPage, filters, apiService]);
 
   const handleFilterChange = (key, value) => {
     setFilters(prev => ({ ...prev, [key]: value }));
   };
+  
   useEffect(() => {
     fetchCategories();
     loadProducts();
-  }, []);
+  }, [fetchCategories, loadProducts]);
 
   useEffect(() => {
     setCurrentPage(1); 
     loadProducts();
-  }, [filters]);
+  }, [filters, loadProducts]);
   
   useEffect(() => {
     loadProducts(); 
-  }, [currentPage]);
+  }, [currentPage, loadProducts]);
 
   const containerStyle = {
     minHeight: '100vh',
@@ -195,6 +197,10 @@ const AllProductsPage = () => {
     textAlign: 'center'
   };
 
+  if (loadingStates.products) {
+    return <Loading />;
+  }
+
   return (
     <div style={containerStyle}>
       <Navbar />
@@ -278,57 +284,67 @@ const AllProductsPage = () => {
               </select>
             </div>
           </div>
-        </div>
 
-        {loadingStates.products ? (
-          <Loading />
-        ) : displayProducts.length > 0 ? (
-          <>
-            <div style={productsGridStyle}>
-              {displayProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
+          {displayProducts.length === 0 ? (
+            <div style={noProductsStyle}>
+              <p>No products found matching your criteria.</p>
             </div>
-
-            {pagination.totalPages > 1 && (
-              <div style={paginationStyle}>
-                <button
-                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                  disabled={currentPage === 1}
-                  style={pageButtonStyle}
-                >
-                  Previous
-                </button>
-                
-                {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(page => (
-                  <button
-                    key={page}
-                    onClick={() => setCurrentPage(page)}
-                    style={currentPage === page ? activePageButtonStyle : pageButtonStyle}
-                  >
-                    {page}
-                  </button>
+          ) : (
+            <div>
+              <div style={productsGridStyle}>
+                {displayProducts.map(product => (
+                  <ProductCard key={product.id} product={product} />
                 ))}
-                
-                <button
-                  onClick={() => setCurrentPage(Math.min(pagination.totalPages, currentPage + 1))}
-                  disabled={currentPage === pagination.totalPages}
-                  style={pageButtonStyle}
-                >
-                  Next
-                </button>
               </div>
-            )}
-          </>
-        ) : (
-          <div style={noProductsStyle}>
-            <h3>No products found</h3>
-            <p>Try adjusting your search criteria or filters</p>
-          </div>
-        )}
+
+              {pagination.totalPages > 1 && (
+                <div style={paginationStyle}>
+                  <button
+                    style={pageButtonStyle}
+                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                    disabled={currentPage === 1}
+                  >
+                    Previous
+                  </button>
+                  
+                  {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(page => (
+                    <button
+                      key={page}
+                      style={currentPage === page ? activePageButtonStyle : pageButtonStyle}
+                      onClick={() => setCurrentPage(page)}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                  
+                  <button
+                    style={pageButtonStyle}
+                    onClick={() => setCurrentPage(Math.min(pagination.totalPages, currentPage + 1))}
+                    disabled={currentPage === pagination.totalPages}
+                  >
+                    Next
+                  </button>
+                  
+                  <span style={{ marginLeft: '15px', color: '#6b7280', fontSize: '14px' }}>
+                    Page {pagination.currentPage} of {pagination.totalPages} 
+                    ({pagination.totalItems} total products)
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </main>
       <Footer />
     </div>
+  );
+};
+
+const AllProductsPage = () => {
+  return (
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <AllProductsContent />
+    </React.Suspense>
   );
 };
 

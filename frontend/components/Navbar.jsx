@@ -7,8 +7,8 @@ import Image from "next/image";
 import "../styles/Navbar.css";
 import { assets } from "../assets/assets";
 
-const Navbar = () => {
-
+const NavbarContent = () => {
+  const searchParams = useSearchParams();
   const { 
     isSeller, 
     user, 
@@ -18,7 +18,6 @@ const Navbar = () => {
     fetchProducts
   } = useAppContext();
 
-  const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [searchSuggestions, setSearchSuggestions] = useState([]);
@@ -170,10 +169,12 @@ const Navbar = () => {
                       className="suggestion-item"
                       onClick={() => handleProductClick(product.id)}
                     >
-                      <img 
+                      <Image 
                         src={product.image?.[0] || '/placeholder.png'} 
                         alt={product.name}
                         className="suggestion-image"
+                        width={40}
+                        height={40}
                       />
                       <div className="suggestion-info">
                         <div className="suggestion-name">{product.name}</div>
@@ -190,6 +191,7 @@ const Navbar = () => {
                       </div>
                     </div>
                   ))}
+
                   <div 
                     className="suggestion-view-all"
                     onClick={() => {
@@ -201,98 +203,80 @@ const Navbar = () => {
                   </div>
                 </>
               ) : (
-                <div className="suggestion-empty">
-                  No products found for "{searchQuery}"
+                <div className="no-suggestions">
+                  No products found
                 </div>
               )}
             </div>
           )}
         </div>
 
-        <button 
-          className="navbar-cart-btn"
-          onClick={() => router.push('/cart')}
-          suppressHydrationWarning={true}
-        >
-          <div className="cart-icon-container">
-            <Image src={assets.cart_icon} alt="cart icon" className="cart-icon" width={24} height={24} />
-            {getCartCount() > 0 && (
-              <span className="cart-count">{getCartCount()}</span>
-            )}
-          </div>
-          <span className="cart-text">Cart</span>
-        </button>
+        <div className="navbar-cart-container">
+          <Image
+            className="navbar-cart-icon"
+            onClick={() => router.push('/cart')}
+            src={assets.cart_icon}
+            alt="cart"
+            width={24}
+            height={24}
+          />
+          {getCartCount() > 0 && (
+            <span className="navbar-cart-count">{getCartCount()}</span>
+          )}
+        </div>
 
         <div className="navbar-user-menu-container">
-          <button className="navbar-account-btn" onClick={handleUserMenuClick} suppressHydrationWarning={true}>
-            <Image src={assets.user_icon} alt="user icon" width={24} height={24} />
-            <span>{user ? user.name.split(' ')[0] : 'Login/Register'}</span>
-          </button>
-          
-          {showUserMenu && user && (
-            <div className="user-menu">
-              <div className="user-menu-header">
-                <span className="user-name">{user.name}</span>
-                <span className="user-email">{user.email}</span>
-              </div>
-              <div className="user-menu-items">
-                <button onClick={() => { router.push('/account'); setShowUserMenu(false); }}>
-                  <Image src={assets.user_icon} alt="profile" className="menu-icon" width={16} height={16} />
-                  My Account
-                </button>
-                <button onClick={() => { router.push('/cart'); setShowUserMenu(false); }}>
-                  <Image src={assets.cart_icon} alt="cart" className="menu-icon" width={16} height={16} />
-                  My Cart ({getCartCount()})
-                </button>
-                <button onClick={() => { router.push('/orders'); setShowUserMenu(false); }}>
-                  <Image src={assets.order_icon} alt="orders" className="menu-icon" width={16} height={16} />
-                  My Orders
-                </button>
-                <div className="menu-divider"></div>
-                <button onClick={handleLogout} className="logout-btn">
-                  <Image src={assets.arrow_icon} alt="logout" className="menu-icon logout-icon" width={16} height={16} />
-                  Logout
-                </button>
-              </div>
+          <Image
+            className="navbar-user-icon"
+            onClick={handleUserMenuClick}
+            src={assets.user_icon}
+            alt="user"
+            width={24}
+            height={24}
+          />
+          {showUserMenu && (
+            <div className="navbar-user-menu">
+              {user ? (
+                <>
+                  <div className="user-menu-header">
+                    <p className="user-name">{user.name}</p>
+                    <p className="user-email">{user.email}</p>
+                  </div>
+                  <div className="user-menu-items">
+                    <button onClick={() => { router.push('/account'); setShowUserMenu(false); }} className="user-menu-item">
+                      My Account
+                    </button>
+                    <button onClick={() => { router.push('/orders'); setShowUserMenu(false); }} className="user-menu-item">
+                      My Orders
+                    </button>
+                    <button onClick={handleLogout} className="user-menu-item logout">
+                      Logout
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <div className="user-menu-items">
+                  <button onClick={() => { router.push('/login'); setShowUserMenu(false); }} className="user-menu-item">
+                    Login
+                  </button>
+                  <button onClick={() => { router.push('/register'); setShowUserMenu(false); }} className="user-menu-item">
+                    Register
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>
       </div>
-
-      <div className="navbar-mobile-actions">
-        <button 
-          className="mobile-search-toggle"
-          onClick={() => router.push('/all-products')}
-          suppressHydrationWarning={true}
-        >
-          <Image src={assets.search_icon} alt="search" width={20} height={20} />
-        </button>
-        
-        <button 
-          className="mobile-cart-btn"
-          onClick={() => router.push('/cart')}
-          suppressHydrationWarning={true}
-        >
-          <div className="cart-icon-container">
-            <Image src={assets.cart_icon} alt="cart" width={20} height={20} />
-            {getCartCount() > 0 && (
-              <span className="cart-count">{getCartCount()}</span>
-            )}
-          </div>
-        </button>
-
-        {isSeller && (
-          <button onClick={() => router.push('/seller')} className="navbar-seller-btn mobile" suppressHydrationWarning={true}>
-            Seller
-          </button>
-        )}
-        
-        <button className="navbar-account-btn" onClick={handleUserMenuClick} suppressHydrationWarning={true}>
-          <Image src={assets.user_icon} alt="user icon" width={24} height={24} />
-          <span>{user ? user.name.split(' ')[0] : 'Login/Register'}</span>
-        </button>
-      </div>
     </nav>
+  );
+};
+
+const Navbar = () => {
+  return (
+    <React.Suspense fallback={<nav className="navbar-container">Loading...</nav>}>
+      <NavbarContent />
+    </React.Suspense>
   );
 };
 

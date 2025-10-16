@@ -1,10 +1,9 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ProductCard from "./ProductCard";
 import "../styles/HomeProducts.css";
 import { useAppContext } from "../context/AppContext";
 
-const HomeProducts = () => {
-
+const HomeProductsContent = () => {
   const { products, router } = useAppContext();
   const displayProducts = products;
 
@@ -18,6 +17,14 @@ const HomeProducts = () => {
         See more
       </button>
     </div>
+  );
+};
+
+const HomeProducts = () => {
+  return (
+    <Suspense fallback={<div>Loading products...</div>}>
+      <HomeProductsContent />
+    </Suspense>
   );
 };
 

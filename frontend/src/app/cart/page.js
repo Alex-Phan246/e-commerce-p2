@@ -6,6 +6,7 @@ import Footer from '../../../components/Footer';
 import Link from 'next/link';
 import { assets } from '../../../assets/assets';
 import '../../../styles/Cart.css';
+import Image from 'next/image';
 
 const CartPage = () => {
   const { 
@@ -96,9 +97,9 @@ const CartPage = () => {
           {cart.length === 0 ? (
             <div className="empty-cart">
               <div className="empty-cart-content">
-                <img src={assets.cart_icon} alt="Empty Cart" className="empty-cart-icon" />
+                <Image src={assets.cart_icon} alt="Empty Cart" className="empty-cart-icon" width={60} height={60} />
                 <h2>Your cart is empty</h2>
-                <p>Looks like you haven't added anything to your cart yet.</p>
+                <p>Looks like you haven&apos;t added anything to your cart yet.</p>
                 <button onClick={handleContinueShopping} className="continue-shopping-btn">
                   Continue Shopping
                 </button>
@@ -118,10 +119,12 @@ const CartPage = () => {
                 {cart.map((item) => (
                   <div key={item.id} className="cart-item">
                     <div className="cart-item-product">
-                      <img 
+                      <Image 
                         src={item.image[0]} 
                         alt={item.name}
                         className="cart-item-image"
+                        width={80}
+                        height={80}
                         onClick={() => router.push(`/product/${item.id}`)}
                       />
                       <div className="cart-item-details">
@@ -152,15 +155,16 @@ const CartPage = () => {
                           className="quantity-btn decrease"
                           disabled={item.quantity <= 1}
                         >
-                          <img src={assets.decrease_arrow} alt="decrease" />
+                          <Image src={assets.decrease_arrow} alt="decrease" width={16} height={16} />
                         </button>
                         <span className="quantity-display">{item.quantity}</span>
                         <button 
                           onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
                           className="quantity-btn increase"
                         >
-                          <img src={assets.increase_arrow} alt="increase" />
+                          <Image src={assets.increase_arrow} alt="increase" width={16} height={16} />
                         </button>
+
                       </div>
                     </div>
 

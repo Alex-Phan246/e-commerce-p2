@@ -26,16 +26,17 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'your-backend-url.vercel.app',
+        hostname: 'your-actual-backend-url.vercel.app',
         pathname: '/images/**',
       },
       {
         protocol: 'https',
-        hostname: 'your-backend-url.vercel.app',
+        hostname: 'your-actual-backend-url.vercel.app',
         pathname: '/assets/**',
       },
     ],
   },
+
   trailingSlash: true,
 };
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { assets } from '../../../backend/assets/assets'
+import { assets } from '../../assets/assets'
 import Image from 'next/image'
 import '../../styles/SellerNavbar.css';
 import { useAppContext } from '../../context/AppContext';

@@ -8,6 +8,7 @@ import ProductCard from '../../../../components/ProductCard';
 import Loading from '../../../../components/Loading';
 import { assets } from '../../../../assets/assets';
 import '../../../../styles/ProductDetail.css';
+import Image from 'next/image';
 
 const ProductDetailPage = () => {
   const { id } = useParams();
@@ -80,7 +81,7 @@ const ProductDetailPage = () => {
     };
 
     loadProductData();
-  }, [id, fetchProduct, fetchProducts]);
+  }, [id, fetchProduct, fetchProducts, apiService]);
 
   const handleQuantityChange = (action) => {
     if (action === 'increase') {
@@ -121,20 +122,20 @@ const ProductDetailPage = () => {
 
     for (let i = 0; i < fullStars; i++) {
       stars.push(
-        <img key={i} src={assets.star_icon} alt="star" className="star-icon" />
+        <Image key={i} src={assets.star_icon} alt="star" className="star-icon" width={20} height={20} />
       );
     }
 
     if (hasHalfStar) {
       stars.push(
-        <img key="half" src={assets.star_dull_icon} alt="half star" className="star-icon" />
+        <Image key="half" src={assets.star_dull_icon} alt="half star" className="star-icon" width={20} height={20} />
       );
     }
 
     const remainingStars = 5 - Math.ceil(rating);
     for (let i = 0; i < remainingStars; i++) {
       stars.push(
-        <img key={`empty-${i}`} src={assets.star_dull_icon} alt="empty star" className="star-icon" />
+        <Image key={`empty-${i}`} src={assets.star_dull_icon} alt="empty star" className="star-icon" width={20} height={20} />
       );
     }
 
@@ -173,7 +174,7 @@ const ProductDetailPage = () => {
         <Navbar />
         <div className="error-container">
           <h2>Product Not Found</h2>
-          <p>The product you're looking for doesn't exist.</p>
+          <p>The product you&apos;re looking for doesn&apos;t exist.</p>
           <button onClick={navigateToHome} className="back-home-btn">
             Back to Home
           </button>
@@ -199,21 +200,25 @@ const ProductDetailPage = () => {
         <div className="product-detail-container">
           <div className="product-images">
             <div className="main-image">
-              <img 
+              <Image 
                 src={product.image[selectedImageIndex] || product.image[0]} 
                 alt={product.name}
                 className="main-product-image"
+                width={500}
+                height={500}
               />
             </div>
             {product.image.length > 1 && (
               <div className="thumbnail-images">
                 {product.image.map((img, index) => (
-                  <img
+                  <Image
                     key={index}
                     src={img}
                     alt={`${product.name} ${index + 1}`}
                     className={`thumbnail ${selectedImageIndex === index ? 'active' : ''}`}
                     onClick={() => setSelectedImageIndex(index)}
+                    width={100}
+                    height={100}
                   />
                 ))}
               </div>
@@ -278,7 +283,7 @@ const ProductDetailPage = () => {
                   disabled={quantity <= 1}
                   className="quantity-btn"
                 >
-                  <img src={assets.decrease_arrow} alt="decrease" />
+                  <Image src={assets.decrease_arrow} alt="decrease" width={16} height={16} />
                 </button>
                 <span className="quantity-display">{quantity}</span>
                 <button 
@@ -286,7 +291,7 @@ const ProductDetailPage = () => {
                   disabled={quantity >= product.quantity}
                   className="quantity-btn"
                 >
-                  <img src={assets.increase_arrow} alt="increase" />
+                  <Image src={assets.increase_arrow} alt="increase" width={16} height={16} />
                 </button>
               </div>
             </div>
@@ -303,7 +308,7 @@ const ProductDetailPage = () => {
                 </span>
               ) : (
                 <>
-                  <img src={assets.cart_icon} alt="cart" />
+                  <Image src={assets.cart_icon} alt="cart" width={20} height={20} />
                   Add to Cart
                 </>
               )}

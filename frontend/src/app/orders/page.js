@@ -1,10 +1,11 @@
 "use client"
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAppContext } from '../../../context/AppContext';
 import Navbar from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
 import { assets } from '../../../assets/assets';
-import '../../../styles/Account.css';
+import '../../../styles/Orders.css';
+import Image from 'next/image';
 
 const OrdersPage = () => {
   const { 
@@ -28,23 +29,7 @@ const OrdersPage = () => {
   });
   const ordersPerPage = 5;
 
-  useEffect(() => {
-    if (!user) {
-      router.push('/login');
-      return;
-    }
-
-    loadUserOrders();
-  }, [user, router]);
-
-  useEffect(() => {
-    if (allOrders.length > 0) {
-      setPagination(calculatePagination(allOrders.length));
-      setOrders(getCurrentPageOrders(allOrders));
-    }
-  }, [currentPage, allOrders]);
-
-  const calculatePagination = (totalOrders) => {
+  const calculatePagination = useCallback((totalOrders) => {
     const totalPages = Math.ceil(totalOrders / ordersPerPage);
     return {
       totalPages,
@@ -52,15 +37,15 @@ const OrdersPage = () => {
       currentPage,
       itemsPerPage: ordersPerPage
     };
-  };
+  }, [currentPage, ordersPerPage]);
 
-  const getCurrentPageOrders = (allOrders) => {
+  const getCurrentPageOrders = useCallback((allOrders) => {
     const startIndex = (currentPage - 1) * ordersPerPage;
     const endIndex = startIndex + ordersPerPage;
     return allOrders.slice(startIndex, endIndex);
-  };
+  }, [currentPage, ordersPerPage]);
 
-  const loadUserOrders = async () => {
+  const loadUserOrders = useCallback(async () => {
     if (!user) return;
     
     setIsLoading(true);
@@ -179,7 +164,32 @@ const OrdersPage = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [user, fetchUserOrders, calculatePagination, getCurrentPageOrders]);
+
+  useEffect(() => {
+    if (!user) {
+      router.push('/login');
+      return;
+    }
+
+    setEditFormData({
+      name: user.name || '',
+      email: user.email || '',
+      phone: user.phone || '',
+      address: user.address && typeof user.address === 'object' 
+        ? `${user.address.street || ''}, ${user.address.city || ''}, ${user.address.state || ''} ${user.address.zipCode || ''}, ${user.address.country || ''}`.replace(/^,\s*|,\s*$|,\s*,/g, '').replace(/\s+/g, ' ').trim()
+        : user.address || ''
+    });
+
+    loadUserOrders();
+  }, [user, router, loadUserOrders]);
+
+  useEffect(() => {
+    if (allOrders.length > 0) {
+      setPagination(calculatePagination(allOrders.length));
+      setOrders(getCurrentPageOrders(allOrders));
+    }
+  }, [currentPage, allOrders, calculatePagination, getCurrentPageOrders]);
 
   const getStatusColor = (status) => {
     switch (status?.toLowerCase()) {
@@ -266,7 +276,7 @@ const OrdersPage = () => {
                     </div>
                   ) : orders.length === 0 ? (
                     <div className="empty-state">
-                      <img src={assets.box_icon} alt="No orders" className="empty-icon" />
+                      <Image src={assets.box_icon} alt="No orders" className="empty-icon" width={60} height={60} />
                       <h3>No orders yet</h3>
                       <p>When you place your first order, it will appear here.</p>
                       <button onClick={() => router.push('/')} className="shop-now-btn">
@@ -301,10 +311,12 @@ const OrdersPage = () => {
                             {(order.items || []).map((item, index) => (
                               <div key={index} className="order-item">
                                 <div className="item-image-container">
-                                  <img 
+                                  <Image 
                                     src={item.image} 
                                     alt={item.name} 
                                     className="item-image"
+                                    width={60}
+                                    height={60}
                                     onLoad={() => {
                                       console.log('✅ My Orders - Image loaded:', item.name);
                                     }}
@@ -476,10 +488,12 @@ const OrdersPage = () => {
                 <div className="modal-order-items">
                   {(selectedOrder.items || []).map((item, index) => (
                     <div key={index} className="modal-order-item">
-                      <img 
+                      <Image 
                         src={item.image} 
                         alt={item.name} 
                         className="modal-item-image"
+                        width={60}
+                        height={60}
                         onLoad={() => {
                           console.log('✅ My Orders Modal - Image loaded:', item.name);
                         }}

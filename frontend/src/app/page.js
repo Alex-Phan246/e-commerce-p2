@@ -15,7 +15,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchProducts({ limit: 100 }); 
-  }, []); 
+  }, [fetchProducts]); 
 
   if (loadingStates.products) {
     return (

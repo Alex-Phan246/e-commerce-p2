@@ -4,6 +4,7 @@ import { useAppContext } from '../../../context/AppContext';
 import Navbar from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
 import { assets } from '../../../assets/assets';
+import Image from 'next/image';
 import '../../../styles/OrderConfirmation.css';
 
 const OrderConfirmationPage = () => {
@@ -124,7 +125,7 @@ const OrderConfirmationPage = () => {
           
           <div className="success-header">
             <div className="success-icon">
-              <img src={assets.checkmark} alt="Success" className="checkmark-icon" />
+              <Image src={assets.checkmark} alt="Success" className="checkmark-icon" width={60} height={60} />
             </div>
             <h1 className="success-title">Order Confirmed!</h1>
             <p className="success-message">
@@ -162,10 +163,12 @@ const OrderConfirmationPage = () => {
                     <div className="items-list">
                       {orderDetails.items.map((item, index) => (
                         <div key={index} className="order-item">
-                          <img 
+                          <Image 
                             src={item.image || '/default-product.jpg'} 
                             alt={item.name}
                             className="item-image"
+                            width={60}
+                            height={60}
                           />
                           <div className="item-details">
                             <h4>{item.name}</h4>
@@ -237,14 +240,14 @@ const OrderConfirmationPage = () => {
               </div>
 
               <div className="next-steps-card">
-                <h2>What's Next?</h2>
+                <h2>What&apos;s Next?</h2>
                 
                 <div className="steps-list">
                   <div className="step">
                     <div className="step-number">1</div>
                     <div className="step-content">
                       <h3>Order Confirmation</h3>
-                      <p>You'll receive an email confirmation shortly with your order details.</p>
+                      <p>You&apos;ll receive an email confirmation shortly with your order details.</p>
                     </div>
                   </div>
                   
@@ -252,7 +255,7 @@ const OrderConfirmationPage = () => {
                     <div className="step-number">2</div>
                     <div className="step-content">
                       <h3>Processing</h3>
-                      <p>We'll prepare your items for shipping within 1-2 business days.</p>
+                      <p>We&apos;ll prepare your items for shipping within 1-2 business days.</p>
                     </div>
                   </div>
                   
@@ -260,7 +263,7 @@ const OrderConfirmationPage = () => {
                     <div className="step-number">3</div>
                     <div className="step-content">
                       <h3>Shipping</h3>
-                      <p>Your order will be shipped and you'll receive tracking information.</p>
+                      <p>Your order will be shipped and you&apos;ll receive tracking information.</p>
                     </div>
                   </div>
                   
@@ -313,8 +316,8 @@ const OrderConfirmationPage = () => {
             <div className="info-card">
               <h3>Track Your Order</h3>
               <p>
-                Once your order ships, you'll receive a tracking number to monitor 
-                your package's progress.
+                Once your order ships, you&apos;ll receive a tracking number to monitor 
+                your package&apos;s progress.
               </p>
             </div>
             
