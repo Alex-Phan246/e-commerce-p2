@@ -13,9 +13,10 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 app.set('trust proxy', 1);
 
+// Update CORS for Vercel deployment
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['http://localhost:3000', 'https://your-frontend-domain.vercel.app', 'https://your-frontend-domain.com']
+    ? ['http://localhost:3000', 'https://your-frontend-domain.vercel.app', 'https://your-frontend-domain.com', /\.vercel\.app$/]
     : true,
   credentials: true
 }));
@@ -27,11 +28,14 @@ app.use(requestLogger);
 // Adjust rate limiting for serverless environment
 app.use(createRateLimiter(15 * 60 * 1000, 1000)); 
 
+// Serve static files
 app.use('/images', express.static(path.join(__dirname, 'assets')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
+// Health check endpoint
 app.get('/health', healthCheck);
 
+// Main API documentation endpoint
 app.get('/', (req, res) => {
   res.json({
     message: 'E-commerce API Server is running!',
@@ -109,7 +113,6 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/cart', cartRoutes);
 
 app.use(globalErrorHandler);
-
 app.use('*', notFoundHandler);
 
 if (require.main === module) {
