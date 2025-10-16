@@ -15,7 +15,7 @@ app.set('trust proxy', 1);
 
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['http://localhost:3000', 'https://your-frontend-domain.com']
+    ? ['http://localhost:3000', 'https://your-frontend-domain.vercel.app', 'https://your-frontend-domain.com']
     : true,
   credentials: true
 }));
@@ -24,6 +24,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 app.use(requestLogger);
 
+// Adjust rate limiting for serverless environment
 app.use(createRateLimiter(15 * 60 * 1000, 1000)); 
 
 app.use('/images', express.static(path.join(__dirname, 'assets')));
@@ -111,7 +112,11 @@ app.use(globalErrorHandler);
 
 app.use('*', notFoundHandler);
 
-app.listen(PORT, () => {
-  console.log(`🚀 E-commerce API Server is running on port ${PORT}`);
-  console.log(`📋 API Documentation available at http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`🚀 E-commerce API Server is running on port ${PORT}`);
+    console.log(`📋 API Documentation available at http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;

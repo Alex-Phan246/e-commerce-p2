@@ -14,6 +14,16 @@ const nextConfig = {
         port: '4000',
         pathname: '/assets/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'your-backend-url.com',
+        pathname: '/images/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'your-backend-url.com',
+        pathname: '/assets/**',
+      },
     ],
   },
 };
