@@ -7,7 +7,7 @@ const {
   globalErrorHandler,
   notFoundHandler,
   healthCheck
-} = require('./middleware/validation');
+} = require('./middleware/validation-simply');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
