@@ -5,7 +5,7 @@ const {
   validateUser, 
   validateId, 
   validatePagination 
-} = require('../middleware/validation');
+} = require('../middleware/validation-simply');
 
 router.get('/', validatePagination, (req, res) => {
   try {
