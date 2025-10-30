@@ -1,9 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
-import { assets } from '../../../backend/assets/assets';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import '../../styles/SellerSidebar.css';
+import { assets } from '../../assets/assets';
 
 const SideBar = () => {
     const pathname = usePathname()

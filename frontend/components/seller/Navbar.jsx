@@ -1,8 +1,8 @@
 import React from 'react'
-import { assets } from '../../../backend/assets/assets'
 import Image from 'next/image'
 import '../../styles/SellerNavbar.css';
 import { useAppContext } from '../../context/AppContext';
+import { assets } from '../../assets/assets';
 
 const Navbar = () => {
 
