@@ -1,5 +1,5 @@
 const IMAGE_BASE_URL = process.env.NEXT_PUBLIC_API_URL ? 
-  process.env.NEXT_PUBLIC_API_URL.replace('/api', '') : 'https://e-commerce-p2-2ig3.vercel.app/';
+  process.env.NEXT_PUBLIC_API_URL.replace('/api', '') : 'https://e-commerce-p2-2ig3.vercel.app';
 
 const logo = `${IMAGE_BASE_URL}/images/logo.svg`;
 const search_icon = `${IMAGE_BASE_URL}/images/search_icon.svg`;
