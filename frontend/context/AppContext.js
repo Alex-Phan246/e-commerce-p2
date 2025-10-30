@@ -8,7 +8,7 @@ const AppContext = createContext();
 
 const apiService = {
   async apiCall(endpoint, options = {}) {
-    const url = `${API_BASE_URL}${endpoint}`;
+    const url = `${API_BASE_URL}/api${endpoint}`;
     const config = {
       headers: {
         'Content-Type': 'application/json',
