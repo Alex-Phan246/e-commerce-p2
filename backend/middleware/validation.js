@@ -1,3 +1,9 @@
+const corsMiddleware = cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: false
+});
+
 const validateProduct = (req, res, next) => {
   const { name, price, category } = req.body;
   const errors = [];
@@ -296,6 +302,7 @@ const healthCheck = (req, res) => {
 };
 
 module.exports = {
+  corsMiddleware,
   validateProduct,
   validateUser,
   validateOrder,
