@@ -1,5 +1,5 @@
 const testAPIs = async () => {
-  const BASE_URL = 'http://localhost:4000';
+  const BASE_URL = 'https://e-commerce-p2.vercel.app';
   
   console.log('🚀 Starting E-commerce API Tests');
   console.log('=' .repeat(50));
