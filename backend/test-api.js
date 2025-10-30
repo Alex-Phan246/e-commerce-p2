@@ -5,7 +5,7 @@ const testAPIs = async () => {
   console.log('=' .repeat(50));
 
   const makeRequest = async (method, endpoint, data = null) => {
-    const url = `${BASE_URL}${endpoint}`;
+    const url = `${BASE_URL}/api${endpoint}`;
     const options = {
       method,
       headers: {
