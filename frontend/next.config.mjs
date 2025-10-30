@@ -3,6 +3,17 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
+        protocol: 'https',
+        hostname: 'e-commerce-p2.vercel.app',
+        pathname: '/images/**',
+      },
+      {
+        protocol: 'https', 
+        hostname: 'e-commerce-p2.vercel.app',
+        pathname: '/assets/**',
+      },
+      // Giữ localhost cho development
+      {
         protocol: 'http',
         hostname: 'localhost',
         port: '4000',
@@ -10,7 +21,7 @@ const nextConfig = {
       },
       {
         protocol: 'http',
-        hostname: 'localhost',
+        hostname: 'localhost', 
         port: '4000',
         pathname: '/assets/**',
       },
