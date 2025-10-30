@@ -5,8 +5,8 @@ import Link from "next/link"
 import { useAppContext } from "../context/AppContext";
 import Image from "next/image";
 import "../styles/Navbar.css";
-import { assets } from "../../backend/assets/assets";
 import Loading from "./Loading";
+import { assets } from "../assets/assets";
 
 const SuspenseNavbar = () => {
   const { 
