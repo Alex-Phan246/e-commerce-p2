@@ -4,8 +4,10 @@
   "description": "expressjs api crud",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "build": "echo 'Backend build successful' && exit 0",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "khiet",
   "license": "ISC",
