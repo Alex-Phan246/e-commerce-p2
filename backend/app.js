@@ -14,10 +14,8 @@ const PORT = process.env.PORT || 4000;
 app.set('trust proxy', 1);
 
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['http://localhost:3000', 'https://your-frontend-domain.com']
-    : true,
-  credentials: true
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
