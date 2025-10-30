@@ -5,7 +5,7 @@ const {
   validateProduct, 
   validateId, 
   validatePagination 
-} = require('../middleware/validation');
+} = require('../middleware/validation-simply');
 let products = [...productsData];
 let nextId = Math.max(...products.map(p => p.id)) + 1;
 
